@@ -34,7 +34,7 @@ import { farmPoints, senecaLogin } from "./senecaApi";
 function App() {
 	const theme = useMantineTheme();
 
-  const [activeStep, setActiveStep] = useState(1);
+  const [activeStep, setActiveStep] = useState(0);
   const nextStep = () => {
     setActiveStep(activeStep + 1);
   };
