@@ -56,12 +56,13 @@ function App() {
   const [testsAmount, setTestsAmount] = useState(10);
 
   const login = async () => {
-    setLoginLoading(true);
-    setUserInfo(await senecaLogin(email, password));
+		setLoginLoading(true);
+		const userInfoNew = await senecaLogin(email, password)
+    setUserInfo(userInfoNew)
 
-    if (!userInfo.error) nextStep();
+    if (!userInfoNew.error) nextStep();
     else {
-      const error = userInfo.error;
+      const error = userInfoNew.error;
       if (error.message.indexOf("INVALID") === 0) {
         // Invalid password
         setEmailError("");
