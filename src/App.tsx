@@ -6,6 +6,7 @@ import {
   Center,
   Checkbox,
   Container,
+  Group,
   Header,
   MantineProvider,
   Navbar,
@@ -106,7 +107,10 @@ function App() {
 				padding="lg"
 				header={
 					<Header height={54} p="xs">
-						<Text weight="bolder" size="xl">Seneca XP farmer</Text>
+						<Group>
+							<Avatar color="black">S</Avatar>
+							<Text weight="bolder" size="xl">Seneca XP farmer</Text>
+						</Group>
 					</Header>
 				}
 			>
