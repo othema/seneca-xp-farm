@@ -176,7 +176,7 @@ function App() {
               <StepperWrapper>
                 <NumberInput
                   placeholder="Amount of tests to complete"
-                  max={100}
+                  max={1000}
                   min={1}
                   value={testsAmount}
                   onChange={(val) => {
