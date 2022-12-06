@@ -82,7 +82,7 @@ function App() {
 		setGenerateLoading(true);
 		setGenerateSuccess(true);
     for (let i = 0; i < testsAmount; i++) {
-			const data = await farmPoints(userInfo.idToken);
+			const data = farmPoints(userInfo.idToken);
 			if (data.message) {
 				setGenerateSuccess(false);
 				break;
@@ -176,7 +176,7 @@ function App() {
               <StepperWrapper>
                 <NumberInput
                   placeholder="Amount of tests to complete"
-                  max={100}
+                  max={1000}
                   min={1}
                   value={testsAmount}
                   onChange={(val) => {
