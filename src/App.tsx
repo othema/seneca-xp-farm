@@ -82,7 +82,7 @@ function App() {
 		setGenerateLoading(true);
 		setGenerateSuccess(true);
     for (let i = 0; i < testsAmount; i++) {
-			const data = farmPoints(userInfo.idToken);
+			const data = await farmPoints(userInfo.idToken);
 			if (data.message) {
 				setGenerateSuccess(false);
 				break;
