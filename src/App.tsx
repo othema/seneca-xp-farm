@@ -153,7 +153,7 @@ function App() {
               <StepperWrapper>
                 <Text weight="bolder">
                   You have no choice. For now, this website only works with the{" "}
-                  <Anchor underline color="blue">
+                  <Anchor href="https://app.senecalearning.com/classroom/course/a1ce4570-6e27-11e8-af4b-35cf52f905c2" underline color="blue">
                     OCR GCSE Computer Science
                   </Anchor>{" "}
                   course.
