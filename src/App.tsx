@@ -1,4 +1,5 @@
 import {
+	Alert,
   Anchor,
   AppShell,
   Avatar,
@@ -13,6 +14,7 @@ import {
   NumberInput,
   PasswordInput,
   Progress,
+  Slider,
   Stack,
   Stepper,
   Text,
@@ -21,9 +23,9 @@ import {
 	useMantineTheme,
 } from "@mantine/core";
 import {
+	IconAlertCircle,
   IconArrowNarrowRight,
   IconCheck,
-  IconCross,
   IconMail,
   IconPassword,
   IconRocket,
@@ -54,7 +56,8 @@ function App() {
 	const [generateSuccess, setGenerateSuccess] = useState(true);
 
   const [userInfo, setUserInfo] = useState<any>({});
-  const [testsAmount, setTestsAmount] = useState(10);
+	const [testsAmount, setTestsAmount] = useState(10);
+	const [waitTime, setWaitTime] = useState(300);
 
   const login = async () => {
 		setLoginLoading(true);
@@ -81,14 +84,32 @@ function App() {
   const generatePoints = async () => {
 		setGenerateLoading(true);
 		setGenerateSuccess(true);
-    for (let i = 0; i < testsAmount; i++) {
-			const data = await farmPoints(userInfo.idToken);
-			if (data.message) {
-				setGenerateSuccess(false);
+		
+		const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
+		let testsCompleted = 0;
+
+		for (let i = 0; i < testsAmount; i++) {
+			farmPoints(userInfo.idToken).then(data => {
+				testsCompleted++;
+				setGeneratePercent(Math.round((testsCompleted / testsAmount) * 100));
+				if (data.message) {
+					setGenerateSuccess(false);
+				}
+			});
+			await delay(waitTime);
+			if (!generateSuccess)
 				break;
-			}
-      setGeneratePercent(Math.round((i / testsAmount) * 100));
-    }
+		}
+		
+
+    // for (let i = 0; i < testsAmount; i++) {
+		// 	const data = await farmPoints(userInfo.idToken);
+		// 	if (data.message) {
+		// 		setGenerateSuccess(false);
+		// 		break;
+		// 	}
+    //   setGeneratePercent(Math.round((i / testsAmount) * 100));
+    // }
 
 		nextStep();
     setGenerateLoading(false);
@@ -103,19 +124,24 @@ function App() {
         primaryColor: "dark",
       }}
     >
-			<AppShell
-				padding="lg"
-				header={
-					<Header height={54} p="xs">
-						<Group>
-							<Avatar color="black">S</Avatar>
-							<Text weight="bolder" size="xl">Seneca XP farmer</Text>
-						</Group>
-					</Header>
-				}
-			>
-        <Container size={800} style={{ marginTop: 50 }}>
+      <AppShell
+        padding="lg"
+        header={
+          <Header height={54} p="xs">
+            <Group>
+              <Avatar color="black">S</Avatar>
+              <Text weight="bolder" size="xl">
+                Seneca XP farmer
+              </Text>
+            </Group>
+          </Header>
+        }
+      >
+        <Container size={800}>
+					<Alert withCloseButton icon={<IconAlertCircle size={16} />} color="red">Please don't tell the teachers about this.</Alert>
+
           <Stepper
+            style={{ marginTop: 30 }}
             active={activeStep}
             onStepClick={setActiveStep}
             breakpoint="xs"
@@ -148,12 +174,17 @@ function App() {
                   Login
                 </Button>
               </StepperWrapper>
-            </Stepper.Step>
+						</Stepper.Step>
+						
             <Stepper.Step label="Courses" description="Select a target course">
               <StepperWrapper>
                 <Text weight="bolder">
                   You have no choice. For now, this website only works with the{" "}
-                  <Anchor href="https://app.senecalearning.com/classroom/course/a1ce4570-6e27-11e8-af4b-35cf52f905c2" underline color="blue">
+                  <Anchor
+                    href="https://app.senecalearning.com/classroom/course/a1ce4570-6e27-11e8-af4b-35cf52f905c2"
+                    underline
+                    color="blue"
+                  >
                     OCR GCSE Computer Science
                   </Anchor>{" "}
                   course.
@@ -167,7 +198,8 @@ function App() {
                   Next step
                 </Button>
               </StepperWrapper>
-            </Stepper.Step>
+						</Stepper.Step>
+						
             <Stepper.Step
               label="Generation"
               description="Tinker with settings"
@@ -182,19 +214,32 @@ function App() {
                   onChange={(val) => {
                     if (val) setTestsAmount(val);
                   }}
-									label="Amount of tests to complete"
-									description="One test rewards approximately 30-150 points"
-                />
+                  label="Amount of tests to complete"
+                  description="One test rewards approximately 30-150 points"
+								/>
+
+								<Text size="sm" mt="sm">Time between requests</Text>
+								<Text size="xs" color="gray">A smaller time means more tests completed per second</Text>
+								<Slider
+									step={25}
+									min={50}
+									max={1000}
+									label={value => `${value}ms`}
+									value={waitTime}
+									onChange={setWaitTime}
+								/>
+
                 <Checkbox
-                  my="sm"
+									mt="xl"
                   label="I acknowledge that I am stupid"
                   checked={termsChecked}
                   onChange={(event) =>
                     setTermsChecked(event.currentTarget.checked)
                   }
-                />
+								/>
+								
                 <Button
-                  my="lg"
+                  my="xs"
                   disabled={!termsChecked}
                   leftIcon={<IconRocket />}
                   onClick={generatePoints}
@@ -208,40 +253,51 @@ function App() {
                     value={generatePercent}
                     label={generatePercent + "%"}
                     size="lg"
-										radius="xl"
-										styles={{
-											label: {
-												float: "right",
-												marginLeft: "auto",
-												marginRight: "10px"
-											}
-										}}
+                    radius="xl"
+                    styles={{
+                      label: {
+                        float: "right",
+                        marginLeft: "auto",
+                        marginRight: "10px",
+                      },
+                    }}
                   />
                 ) : (
                   <></>
                 )}
               </StepperWrapper>
-						</Stepper.Step>
-						<Stepper.Completed>
-							<StepperWrapper>
-								<Center>
-									<Avatar radius="xl" color={generateSuccess ? "green" : "red"}>
-										{generateSuccess
-											? < IconCheck />
-											: <IconX />
-										}
-									</Avatar>
-								</Center>
-								<Title style={{ marginTop: theme.spacing.sm }} order={3} align="center">{generateSuccess ? `${testsAmount} tests completed` : "Generation failed"}.</Title>
-								{!generateSuccess
-									? <Text align="center" color="gray">Try logging in again.</Text>
-									: <></>
-								}
-								<Center>
-									<Button my="lg" onClick={() => setActiveStep(2)}>Generate again</Button>
-								</Center>
-							</StepperWrapper>
-						</Stepper.Completed>
+            </Stepper.Step>
+            <Stepper.Completed>
+              <StepperWrapper>
+                <Center>
+                  <Avatar radius="xl" color={generateSuccess ? "green" : "red"}>
+                    {generateSuccess ? <IconCheck /> : <IconX />}
+                  </Avatar>
+                </Center>
+                <Title
+                  style={{ marginTop: theme.spacing.sm }}
+                  order={3}
+                  align="center"
+                >
+                  {generateSuccess
+                    ? `${testsAmount} tests completed`
+                    : "Generation failed"}
+                  .
+                </Title>
+                {!generateSuccess ? (
+                  <Text align="center" color="gray">
+                    Try logging in again.
+                  </Text>
+                ) : (
+                  <></>
+                )}
+                <Center>
+                  <Button my="lg" onClick={() => setActiveStep(2)}>
+                    Generate again
+                  </Button>
+                </Center>
+              </StepperWrapper>
+            </Stepper.Completed>
           </Stepper>
         </Container>
       </AppShell>
