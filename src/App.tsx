@@ -100,16 +100,6 @@ function App() {
 			if (!generateSuccess)
 				break;
 		}
-		
-
-    // for (let i = 0; i < testsAmount; i++) {
-		// 	const data = await farmPoints(userInfo.idToken);
-		// 	if (data.message) {
-		// 		setGenerateSuccess(false);
-		// 		break;
-		// 	}
-    //   setGeneratePercent(Math.round((i / testsAmount) * 100));
-    // }
 
 		nextStep();
     setGenerateLoading(false);
@@ -138,7 +128,7 @@ function App() {
         }
       >
         <Container size={800}>
-					<Alert withCloseButton icon={<IconAlertCircle size={16} />} color="red">Please don't tell the teachers about this.</Alert>
+					<Alert icon={<IconAlertCircle size={16} />} color="red">Sometimes the app doesn't work and I dont know why.</Alert>
 
           <Stepper
             style={{ marginTop: 30 }}
