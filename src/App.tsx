@@ -128,7 +128,7 @@ function App() {
         }
       >
         <Container size={800}>
-					<Alert icon={<IconAlertCircle size={16} />} color="red">Sometimes the app doesn't work and I dont know why.</Alert>
+					<Alert icon={<IconAlertCircle size={16} />} color="red">[Changed ID] Sometimes the app doesn't work and I dont know why.</Alert>
 
           <Stepper
             style={{ marginTop: 30 }}
