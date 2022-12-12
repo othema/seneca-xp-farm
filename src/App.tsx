@@ -128,7 +128,7 @@ function App() {
         }
       >
         <Container size={800}>
-					<Alert icon={<IconAlertCircle size={16} />} color="red">[Changed ID] Sometimes the app doesn't work and I dont know why.</Alert>
+					<Alert icon={<IconAlertCircle size={16} />} color="red">Sometimes the app doesn't work and I dont know why.</Alert>
 
           <Stepper
             style={{ marginTop: 30 }}
@@ -212,8 +212,8 @@ function App() {
 								<Text size="xs" color="gray">A smaller time means more tests completed per second</Text>
 								<Slider
 									step={25}
-									min={150}
-									max={1000}
+									min={600}
+									max={5000}
 									label={value => `${value}ms`}
 									value={waitTime}
 									onChange={setWaitTime}
