@@ -212,7 +212,7 @@ function App() {
 								<Text size="xs" color="gray">A smaller time means more tests completed per second</Text>
 								<Slider
 									step={25}
-									min={50}
+									min={150}
 									max={1000}
 									label={value => `${value}ms`}
 									value={waitTime}
@@ -282,9 +282,9 @@ function App() {
                   <></>
                 )}
                 <Center>
-                  {/* <Button my="lg" onClick={() => setActiveStep(2)}>
+                  <Button my="lg" onClick={() => setActiveStep(2)}>
                     Generate again
-                  </Button> */}
+                  </Button>
                 </Center>
               </StepperWrapper>
             </Stepper.Completed>
