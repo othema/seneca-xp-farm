@@ -282,9 +282,9 @@ function App() {
                   <></>
                 )}
                 <Center>
-                  <Button my="lg" onClick={() => setActiveStep(2)}>
+                  {/* <Button my="lg" onClick={() => setActiveStep(2)}>
                     Generate again
-                  </Button>
+                  </Button> */}
                 </Center>
               </StepperWrapper>
             </Stepper.Completed>
