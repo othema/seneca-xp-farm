@@ -212,8 +212,8 @@ function App() {
 								<Text size="xs" color="gray">A smaller time means more tests completed per second</Text>
 								<Slider
 									step={25}
-									min={600}
-									max={5000}
+									min={50}
+									max={2000}
 									label={value => `${value}ms`}
 									value={waitTime}
 									onChange={setWaitTime}
